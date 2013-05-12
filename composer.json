@@ -1,0 +1,16 @@
+{
+    "name": "tdt/pages",
+    "description": "A library to print nice pages quickly",
+    "keywords": ["pages","template"],
+    "homepage": "http://thedatatank.com",
+    "type": "library",
+    "license": "AGPLv3",
+    "require": {
+    },
+    "minimum-stability" : "dev",
+    "autoload": {
+        "psr-0": {
+            "tdt\\pages\\": "src/"
+        }
+    }
+}
