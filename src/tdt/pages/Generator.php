@@ -56,7 +56,7 @@ class Generator {
         $this->css[] = $url;
     }
 
-    public function addMenuitem($title, $url, $weigth = 0, $active = false, $newwindow=false){
+    public function addMenuItem($title, $url, $weigth = 0, $active = false, $newwindow=false){
         $item = array();
         $item["title"] = $title;
         $item["url"] = $url;
@@ -119,8 +119,8 @@ class Generator {
             <div class="navbar-inner">
                 <div class="container">
                     <div id="headline" class="brand"><?php echo $this->title; ?></div>
-                    <div id="menu" class="menu">
-                        <ul>
+                    <nav id="menu" class="nav-collapse collapse">
+                        <ul class="nav" id="nav">
 <?php
         foreach($this->menuitems as $item){
             $arg = "";
@@ -134,7 +134,7 @@ class Generator {
         
 ?>
                         </ul>
-                    </div>
+                    </nav>
                 </div>
             </div>
         </div>
