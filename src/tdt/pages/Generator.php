@@ -12,6 +12,8 @@
  * License: AGPLv3
  * Author: Pieter Colpaert
  */
+namespace tdt\pages;
+
 class Generator {
 
     private $js,$css,$menuitems,$title;
@@ -23,7 +25,7 @@ class Generator {
     public function __construct($config = array()){
         $this->js = array();
         $this->css = array();
-        $this->menuitem = array();
+        $this->menuitems = array();
         $this->title = "The DataTank";
         
         if(!empty($config)){
@@ -141,10 +143,11 @@ class Generator {
         echo $body;
         // print HTML footer
 ?>
-        <footer>&copy; OKFN Belgium - We Open Data &ndash; The DataTank &ndash Visit our <a href="http://thedatatank.com/" target="_blank">website</a></footer>
+        <footer>
+            <p>&copy; OKFN Belgium &ndash; We Open Data &ndash; The DataTank &ndash; Visit our <a href="http://thedatatank.com/" target="_blank">website</a></p>
+        </footer>
     </body>
 </html>
 <?php
     }
-    
 }
