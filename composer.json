@@ -6,6 +6,7 @@
     "type": "library",
     "license": "AGPLv3",
     "require": {
+        "mustache/mustache" : "dev-master"
     },
     "minimum-stability" : "dev",
     "autoload": {

@@ -11,20 +11,21 @@ When we need nice pages across a project which main focus is API output, and not
 ```php
 
 use tdt\pages\Generator;
+
 $generator = new Generator();
-//set Title
+// Set title
 $generator->setTitle("This is an example page");
 
-//add a javascript library
+// Add a javascript library
 $generator->addJS("http://....js");
 
-//add some css
+// Add some CSS
 $generator->addCSS("http://....css");
 
-//add a menu item: title, url, weight, active, open in new window
-$generator->addMenuItem("This page", "#",0,true,false);
+// Add a menu item: title, url, active, open in new window
+$generator->addMenuItem("This page", "#", true, false);
 
-//generate the page
+// Generate the page
 $generator->generate("<h1>Hello World!</h1>");
 
 ```

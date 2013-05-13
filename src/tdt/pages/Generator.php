@@ -8,15 +8,19 @@
  *
  * It *does not* print HTTP Headers!
  *
- * Copyright (C) 2013 by OKFN Belgium 
+ * Copyright (C) 2013 by OKFN Belgium
  * License: AGPLv3
  * Author: Pieter Colpaert
+ * Author: Michiel Vancoillie
  */
 namespace tdt\pages;
 
+use Mustache_Engine;
+
 class Generator {
 
-    private $js,$css,$menuitems,$title;
+    private $js, $css, $menuitems, $title;
+    private $mustache;
 
     /**
      * Constructs a page
@@ -27,7 +31,7 @@ class Generator {
         $this->css = array();
         $this->menuitems = array();
         $this->title = "The DataTank";
-        
+
         if(!empty($config)){
             if(isset($config["js"])){
                 $this->js = $config["js"];
@@ -42,6 +46,8 @@ class Generator {
                 $this->title = $config["title"];
             }
         }
+
+        $this->mustache = new Mustache_Engine;
     }
 
     public function setTitle($title){
@@ -56,98 +62,49 @@ class Generator {
         $this->css[] = $url;
     }
 
-    public function addMenuItem($title, $url, $weigth = 0, $active = false, $newwindow=false){
-        $item = array();
-        $item["title"] = $title;
-        $item["url"] = $url;
+    public function addMenuItem($title, $url, $active = false, $newwindow=false){
+        $item = new \stdClass();
+        $item->title = $title;
+        $item->url = $url;
 
-        $item["weight"] = $weight;
-        $item["active"] = $active;
-        $item["newwindow"] = $newwindow;
-        
+        $item->active = $active;
+        $item->newwindow = $newwindow;
+
         $this->menuitems[] = $item;
     }
 
-    // src: http://stackoverflow.com/questions/2699086/sort-multidimensional-array-by-value-2
-    private function aasort (&$array, $key) {
-        $sorter = array();
-        $ret = array();
-        reset($array);
-        foreach ($array as $ii => $va) {
-            $sorter[$ii] = $va[$key];
-        }
-        asort($sorter);
-        foreach ($sorter as $ii => $va) {
-            $ret[$ii] = $array[$ii];
-        }
-        $array = $ret;
-    }
-
     public function generate($body){
-        //sort menu items
-        $this->aasort($this->menuitems,"weight");
 
-        // print HTML heading
-?>
-<html>
-    <head profile="http://dublincore.org/documents/dcq-html/">
-        <title><?php echo $this->title; ?></title>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <meta name="DC.title" content="<?php echo $this->title; ?>"/>
+        // Set data
+        $data = array();
+        $data['title'] = $this->title;
+        $data['javascript'] = $this->js;
+        $data['css'] = $this->css;
+        $data['body'] = $body;
+        $menu = new \stdClass();
+        $menu->items = $this->menuitems;
+        $data['menu'] = $menu;
 
-<?php
-        foreach($this->js as $url){
-?>
-        <script src="<?php echo $url; ?>"></script>
-<?php
+        // Add bootstrap files as default
+        $data['bootstrap_js'] = "";
+        $bootstrap_js = @file_get_contents(__DIR__."/../../../includes/js/bootstrap.min.js");
+        if($bootstrap_js){
+            $data['bootstrap_js'] .= $bootstrap_js;
         }
-?>
-        <link rel="stylesheet" type="text/css" href="http://thedatatank.com/wp-content/themes/wordpress-theme-okfn/style.css" media="screen" />
-        <style>
-            body{
-                margin-left: 200px;
-                margin-top: 50px;
-            }
-        </style>
-    </head>
-
-    <body>
-<?php
-        // print HTML body header
-?>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <div id="headline" class="brand"><?php echo $this->title; ?></div>
-                    <nav id="menu" class="nav-collapse collapse">
-                        <ul class="nav" id="nav">
-<?php
-        foreach($this->menuitems as $item){
-            $arg = "";
-            if($item["newwindow"]){
-                $arg .= "target=\"_blank\"";
-            }
-            //indent for nice html output
-            echo "                            ";
-            echo "<li><a href=\"" . $item["url"] ."\" " . $arg .">" . $item["title"]  . "</a></li>\n";
+        $data['bootstrap_css'] = "";
+        $bootstrap_css = @file_get_contents(__DIR__."/../../../includes/css/bootstrap.min.css");
+        if($bootstrap_css){
+            $data['bootstrap_css'] .= $bootstrap_css;
         }
-        
-?>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-<?php
-        // print HTML body body
-        echo $body;
-        // print HTML footer
-?>
-        <footer>
-            <p>&copy; OKFN Belgium &ndash; We Open Data &ndash; The DataTank &ndash; Visit our <a href="http://thedatatank.com/" target="_blank">website</a></p>
-        </footer>
-    </body>
-</html>
-<?php
+        $bootstrap_css = @file_get_contents(__DIR__."/../../../includes/css/bootstrap-responsive.min.css");
+        if($bootstrap_css){
+            $data['bootstrap_css'] .= $bootstrap_css;
+        }
+
+        // Get default template
+        $template = @file_get_contents(__DIR__."/../../../includes/template/base.html");
+
+        // Render HTML
+        echo $this->mustache->render($template, $data);
     }
 }
