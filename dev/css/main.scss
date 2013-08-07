@@ -69,6 +69,29 @@ body {
     }
 }
 
+.btn{
+    background-color: rgba(255 , 255, 255, 0.8);
+    border: 1px solid darken($beige, 10%);
+    border-radius: 2px;
+    color: #333;
+
+    &:focus, &:hover{
+        color: #333;
+        background-color: $darker-beige;
+    }
+
+    &.btn-primary{
+        background-color: $green;
+        color: #fff;
+        border: 1px solid darken($green, 7%);
+
+        &:focus, &:hover{
+            background-color: $highlight;
+        border: 1px solid darken($highlight, 7%);
+        }
+    }
+}
+
 a{
     color: $green;
 
@@ -79,7 +102,7 @@ a{
 }
 
 .well{
-    border: 1px solid darken(#F5F4EE, 10%);
+    border: 1px solid darken($beige, 10%);
     background: rgba(255,255,255, 0.3);
     box-shadow: none;
 }

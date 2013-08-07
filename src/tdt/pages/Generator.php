@@ -119,7 +119,7 @@ class Generator {
      * Generate the page
      * @param string $body
      */
-    public function generate($body){
+    public function generate($body, $template = 'base'){
 
         // Set the data
         $data = array();
@@ -137,12 +137,27 @@ class Generator {
         // Push default CSS
         array_push($data['css'], $this->baseURL  . 'css/main.css');
 
+        // Logo URL
         $data['logo'] = $this->baseURL  . 'img/logo.png';
 
+        if($template == 'resource'){
+            $url = $this->getCurrentURI();
+            $url= rtrim($url, '.about');
+            $url= rtrim($url, '.html');
+            $data['json_link'] = $url . '.json';
+            $data['xml_link'] = $url . '.xml';
+        }
+
         // Get default template
-        $template = @file_get_contents(__DIR__."/../../../includes/template/base.html");
+        $template_data = @file_get_contents(__DIR__ . "/../../../includes/template/header.html");
+        $template_data .= @file_get_contents(__DIR__ . "/../../../includes/template/" . $template . ".html");
+        $template_data .= @file_get_contents(__DIR__ . "/../../../includes/template/footer.html");
 
         // Render HTML
-        echo $this->mustache->render($template, $data);
+        echo $this->mustache->render($template_data, $data);
+    }
+
+    private function getCurrentURI() {
+        return rtrim($_SERVER["PHP_SELF"], '.index.php') . $_SERVER["REQUEST_URI"];
     }
 }
