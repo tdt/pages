@@ -4,7 +4,12 @@ include_once("../vendor/autoload.php");
 
 use tdt\pages\Generator;
 
-$generator = new Generator();
+// Set base URL for public folder
+$config['baseURL'] = '../public/';
+
+// Create a new generator
+$generator = new Generator($config);
+
 // Set title
 $generator->setTitle("This is an example page");
 
