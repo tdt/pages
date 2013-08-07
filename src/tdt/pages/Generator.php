@@ -38,6 +38,7 @@ class Generator {
         if(class_exists('\app\core\Config')){
             // Get root folder for building relative URLS for assets
             $this->baseURL = '/'. \app\core\Config::get('general', 'subdir') . PACKAGE_PATH;
+            $this->baseURL = str_replace('//', '/', $this->baseURL);
         }else{
             // Assume the example file is served
             $this->baseURL = '../public/';
@@ -183,6 +184,8 @@ class Generator {
 
 
     private function getCurrentURI() {
-        return preg_replace('/index\.php$/', '', $_SERVER["PHP_SELF"]) . $_SERVER["REQUEST_URI"];
+        // Start slash if PHP_SELF is empty
+        $uri = '/'. preg_replace('/index\.php$/', '', $_SERVER["PHP_SELF"]) .  $_SERVER["REQUEST_URI"];
+        return str_replace('//', '/', $uri);
     }
 }
