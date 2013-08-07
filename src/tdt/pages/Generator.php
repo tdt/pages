@@ -142,8 +142,7 @@ class Generator {
 
         if($template == 'resource'){
             $url = $this->getCurrentURI();
-            $url= rtrim($url, '.about');
-            $url= rtrim($url, '.html');
+            $url =  preg_replace('/(\.about|\.html)$/', '', $url);
             $data['json_link'] = $url . '.json';
             $data['xml_link'] = $url . '.xml';
         }
@@ -184,6 +183,6 @@ class Generator {
 
 
     private function getCurrentURI() {
-        return rtrim($_SERVER["PHP_SELF"], '.index.php') . $_SERVER["REQUEST_URI"];
+        return preg_replace('/index\.php$/', '', $_SERVER["PHP_SELF"]) . $_SERVER["REQUEST_URI"];
     }
 }
