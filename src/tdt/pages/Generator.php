@@ -184,6 +184,8 @@ class Generator {
 
 
     private function getCurrentURI() {
-        return preg_replace('/index\.php$/', '', $_SERVER["PHP_SELF"]) . $_SERVER["REQUEST_URI"];
+        // Start slash if PHP_SELF is empty
+        $uri = '/'. preg_replace('/index\.php$/', '', $_SERVER["PHP_SELF"]) .  $_SERVER["REQUEST_URI"];
+        return str_replace('//', '/', $uri);
     }
 }
