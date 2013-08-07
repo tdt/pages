@@ -38,6 +38,7 @@ class Generator {
         if(class_exists('\app\core\Config')){
             // Get root folder for building relative URLS for assets
             $this->baseURL = '/'. \app\core\Config::get('general', 'subdir') . PACKAGE_PATH;
+            $this->baseURL = str_replace('//', '/', $this->baseURL);
         }else{
             // Assume the example file is served
             $this->baseURL = '../public/';
@@ -143,6 +144,7 @@ class Generator {
         if($template == 'resource'){
             $url = $this->getCurrentURI();
             $url =  preg_replace('/(\.about|\.html)$/', '', $url);
+            $url = str_replace('//', '/', $url);
             $data['json_link'] = $url . '.json';
             $data['xml_link'] = $url . '.xml';
         }
@@ -183,6 +185,6 @@ class Generator {
 
 
     private function getCurrentURI() {
-        return preg_replace('/index\.php$/', '', $_SERVER["PHP_SELF"]) . $_SERVER["REQUEST_URI"];
+        return preg_replace('/index\.php$/', '', $_SERVER["PHP_SELF"]) .  $_SERVER["REQUEST_URI"];
     }
 }
