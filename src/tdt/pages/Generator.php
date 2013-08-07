@@ -38,6 +38,7 @@ class Generator {
         if(class_exists('\app\core\Config')){
             // Get root folder for building relative URLS for assets
             $this->baseURL = '/'. \app\core\Config::get('general', 'subdir') . PACKAGE_PATH;
+            $this->baseURL = str_replace('//', '/', $this->baseURL);
         }else{
             // Assume the example file is served
             $this->baseURL = '../public/';
