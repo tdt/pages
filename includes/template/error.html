@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head profile="http://dublincore.org/documents/dcq-html/">
+        <title>{{title}}</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        {{#css}}
+        <link href="{{.}}" rel="stylesheet">
+        {{/css}}
+    </head>
+
+    <body>
+        <div class="container wrapper">
+            <div class="error clearfix">
+                <div class='logo'>
+                    <img src='{{logo}}'/>
+                </div>
+
+                <h1>{{code}} &ndash; Oops</h1>
+                <h3>{{message}}</h3>
+                <p>{{body}}</p>
+            </div>
+
+            <div class='push'></div>
+        </div>
+
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <a href="http://thedatatank.com/" target="_blank">The DataTank</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

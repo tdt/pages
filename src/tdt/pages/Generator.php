@@ -157,6 +157,32 @@ class Generator {
         echo $this->mustache->render($template_data, $data);
     }
 
+    /*
+     * Render an error page
+     */
+    public function error($code, $message, $body){
+        // Set the data
+        $data = array();
+        $data['title'] = $this->title;
+        $data['javascript'] = $this->js;
+        $data['css'] = $this->css;
+        $data['body'] = $body;
+        $data['code'] = $code;
+        $data['message'] = $message;
+
+        // Logo URL
+        $data['logo'] = $this->baseURL  . 'img/error.png';
+
+        // Push default CSS
+        array_push($data['css'], $this->baseURL  . 'css/error.css');
+
+        $template_data = @file_get_contents(__DIR__ . "/../../../includes/template/error.html");
+
+        // Render HTML
+        echo $this->mustache->render($template_data, $data);
+    }
+
+
     private function getCurrentURI() {
         return rtrim($_SERVER["PHP_SELF"], '.index.php') . $_SERVER["REQUEST_URI"];
     }
